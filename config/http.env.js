@@ -1,5 +1,6 @@
 import axios from "axios";
 axios.defaults.baseURL = "http://{Server-IP}}/api/v1";
+export { default } from 'axios';
 axios.interceptors.response.use(
     config => {
         if (config.status === 200) {
@@ -13,9 +14,9 @@ axios.interceptors.response.use(
 )
 /**
  * 获取所有的License数据
- * @param {String} url 
- * @param {Object} parms 
- * @returns 
+ * @param {String} url
+ * @param {Object} parms
+ * @returns
  */
 export const getLicenseDataAll = (data = {}) => {
     return axios.request({
@@ -27,9 +28,9 @@ export const getLicenseDataAll = (data = {}) => {
 
 /**
  * 获取所有的Dataset数据
- * @param {String} url 
- * @param {Object} parms 
- * @returns 
+ * @param {String} url
+ * @param {Object} parms
+ * @returns
  */
 export const getDatasetDataAll = (data) => {
     return axios.request({
@@ -41,9 +42,9 @@ export const getDatasetDataAll = (data) => {
 
 
 /**
- * 
- * @param {object} data 
- * @returns 
+ *
+ * @param {object} data
+ * @returns
  */
 export const getDatasetBasic = (data) => {
     return axios.request({
@@ -67,9 +68,9 @@ export const getDatasetBasic = (data) => {
 // }
 
 /**
- * 
- * @param {object} data 
- * @returns 
+ *
+ * @param {object} data
+ * @returns
  */
 export const getLicenseBasicInfo = (data) => {
     return axios.request({
@@ -80,9 +81,9 @@ export const getLicenseBasicInfo = (data) => {
 }
 
 /**
- * 
- * @param {object} data 
- * @returns 
+ *
+ * @param {object} data
+ * @returns
  */
 export const getLicenseBasicDataTab = (data) => {
     return axios.request({
@@ -93,9 +94,9 @@ export const getLicenseBasicDataTab = (data) => {
 }
 
 /**
- * 
- * @param {object} data 
- * @returns 
+ *
+ * @param {object} data
+ * @returns
  */
 export const getLicenseBasicModleTab = (data) => {
     return axios.request({
@@ -106,9 +107,9 @@ export const getLicenseBasicModleTab = (data) => {
 }
 
 /**
- * 
- * @param {object} data 
- * @returns 
+ *
+ * @param {object} data
+ * @returns
  */
 export const getLicenseBasicOtherTab = (data) => {
     return axios.request({

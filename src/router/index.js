@@ -7,9 +7,9 @@ export default new Router({
     routes: [
 
       /**
-       * 
+       *
        * Home page
-       * 
+       *
        */
       {
         path: '/',
@@ -30,12 +30,12 @@ export default new Router({
         component: () => import('../views/dataSetInfo.vue'),
         props: route => ({id: route.query.id})
       },
-     
+
 
       /**
        * Type page
-       * 
-       *  */ 
+       *
+       *  */
      {
         path:"/typeLicense",
         component:()=>import("../views/typeLicense.vue"),
@@ -48,8 +48,8 @@ export default new Router({
       },
       /**
        * Search components
-       * 
-       *  */ 
+       *
+       *  */
        {
         path:"/searchLicense",
         component:()=>import("../components/Search/searchLicense.vue"),
@@ -77,19 +77,19 @@ export default new Router({
 
 
       /**
-       * 
+       *
        * Export
-       * 
-       * 
+       *
+       *
        */
       {
         path:"/Export",
         component:()=>import("../components/Export/Export.vue"),
       },
       /**
-       * 
+       *
        * format
-       * 
+       *
        */
        {
         path: '/dataSetFormat',
@@ -122,8 +122,28 @@ export default new Router({
         path: "/uploadLicense",
         component: () => import("../components/Skill/uploadLicense"),
       },
-     
-  
-    
+      /*
+       *
+       * review
+       */
+      {
+        path:"/review",
+        component:()=>import("../views/review.vue"),
+        redirect:'/review/review_upload',
+        children:[
+          {
+            path:"/review/review_upload",
+            component:()=>import("../components/Review/reviewUpload.vue"),
+          },
+          {
+            path:"/review/appending_aibom",
+            component:()=>import("../components/Review/apendingAIBOM"),
+          },{
+            name:"/review/appending_aibom_table",
+            path:"/review/appending_aibom_table",
+            component:()=>import("../components/Review/apendingAIBOM-table"),
+          },
+        ]
+      },
     ]
   })

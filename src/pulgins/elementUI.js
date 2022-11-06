@@ -33,7 +33,10 @@ import {
   Notification,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Popover,
+  Message,
+  Dialog
 } from "element-ui";
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
@@ -75,7 +78,8 @@ export default {
       .use(Dropdown)
       .use(DropdownMenu)
       .use(DropdownItem)
-
+      .use(Popover)
+      .use(Dialog)
   }
 };
 Vue.prototype.$confirm = MessageBox.confirm;

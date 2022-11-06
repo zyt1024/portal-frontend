@@ -202,6 +202,10 @@ export default {
           value: "1",
           label: "Dataset",
         },
+        {
+          value:"2",
+          label:"Review",
+        }
       ],
       login: [
         {
@@ -245,9 +249,15 @@ export default {
       this.openSignin = !this.openSignin;
     },
     toDataSetALL() {
-      this.$router.push({
-        path: "/dataSetAll",
-      });
+      if(this.value == 1){
+        this.$router.push({
+          path: "/dataSetAll",
+        });
+      }else {
+        this.$router.push({
+          path: "/review",
+        });
+      }
     },
     toLicenseInfo(id) {
       this.$router.push({
