@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://{Server-IP}}/api/v1";
+axios.defaults.baseURL = "http://{server_ip}/api/v1";
 export { default } from 'axios';
 axios.interceptors.response.use(
     config => {

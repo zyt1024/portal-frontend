@@ -196,7 +196,7 @@ export default {
     return {
       skill: null,
       drawer: false,
-      value: [],
+      value: 'License',
       vague: [
         {
           value: "1",
@@ -254,9 +254,13 @@ export default {
           path: "/dataSetAll",
         });
       }else {
+
         this.$router.push({
           path: "/review",
         });
+        if(this.$route.path === '/licenseAll'){
+          this.value = 'license';
+        }
       }
     },
     toLicenseInfo(id) {

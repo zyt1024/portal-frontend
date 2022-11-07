@@ -36,10 +36,12 @@ import {
   DropdownItem,
   Popover,
   Message,
-  Dialog
+  Dialog,
+  Tag
 } from "element-ui";
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
+import Ta from "element-ui/src/locale/lang/ta";
 
 // 设置语言
 locale.use(lang)
@@ -80,6 +82,7 @@ export default {
       .use(DropdownItem)
       .use(Popover)
       .use(Dialog)
+      .use(Tag)
   }
 };
 Vue.prototype.$confirm = MessageBox.confirm;

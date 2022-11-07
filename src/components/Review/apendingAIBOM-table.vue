@@ -4,7 +4,9 @@
       :data="tableData"
       stripe
       border
-      style="width: 98%" ref="ruleForm">
+      style="width: 98%"
+      max-height="600"
+    >
       <el-table-column
         prop="name"
         label="name"
@@ -29,7 +31,7 @@
       <el-table-column
         prop="concluded_license"
         label="concluded_license"
-        width="140">
+        width="150">
       </el-table-column>
       <el-table-column
         prop="declared_license"
@@ -40,6 +42,9 @@
         prop="type"
         label="type"
         width="120">
+        <template slot-scope="scope" v-if="scope.row.type !== null">
+          <el-tag type="success">{{ scope.row.type }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         prop="size"
@@ -62,18 +67,35 @@
         width="200">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="known_biases"
         label="known_biases"
         width="140">
+        <template slot-scope="scope" v-if="scope.row.known_biases !== null">
+          <el-tag :type="scope.row.known_biases ? 'success' : 'error'">{{ scope.row.known_biases }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="sensitive_personal_information"
         label="sensitive_personal_information"
         width="250">
+        <template slot-scope="scope" v-if="scope.row.sensitive_personal_information !== null">
+          <el-tag :type="scope.row.sensitive_personal_information ? 'success' : 'error'">{{ scope.row.sensitive_personal_information }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="offensive_content"
         label="offensive_content"
+        width="150">
+        <template slot-scope="scope" v-if="scope.row.offensive_content !== null">
+          <el-tag :type="scope.row.offensive_content ? 'success' : 'error'">{{ scope.row.offensive_content }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="rejection_notes"
+        label="rejection_notes"
         width="150">
       </el-table-column>
       <el-table-column
@@ -112,7 +134,7 @@
         <el-form-item label="type" :label-width="formLabelWidth" prop="type" required>
           <el-input v-model="currentData.type" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="size" :label-width="formLabelWidth">
+        <el-form-item label="size" :label-width="formLabelWidth" prop="size" required >
           <el-input v-model="currentData.size" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="intended_use" :label-width="formLabelWidth" prop="intended_use" required>
@@ -125,19 +147,34 @@
           <el-input v-model="currentData.data_collection_process" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="known_biases" :label-width="formLabelWidth">
-          <el-select v-model="currentData.known_biases" placeholder="please select true or false" style="width: 100%">
-            <el-option label="true" value="true"></el-option>
-            <el-option label="false" value="false"></el-option>
-          </el-select>
+<!--          <el-select v-model="currentData.known_biases" placeholder="please select true or false" style="width: 100%">-->
+<!--            <el-option label="true" :value="true"></el-option>-->
+<!--            <el-option label="false" :value="false"></el-option>-->
+<!--          </el-select>-->
+          <el-radio-group v-model="currentData.known_biases">
+            <el-radio :label="true" border></el-radio>
+            <el-radio :label="false" border></el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="sensitive_personal_information" :label-width="formLabelWidth" >
-          <el-select v-model="currentData.sensitive_personal_information" placeholder="please select true or false" style="width: 100%">
-            <el-option label="true" value="true"></el-option>
-            <el-option label="false" value="false"></el-option>
-          </el-select>
+<!--          <el-select v-model="currentData.sensitive_personal_information" placeholder="please select true or false" style="width: 100%">-->
+<!--            <el-option label="true" :value="true"></el-option>-->
+<!--            <el-option label="false" :value="false"></el-option>-->
+<!--          </el-select>-->
+          <el-radio-group v-model="currentData.sensitive_personal_information">
+            <el-radio :label="true" border></el-radio>
+            <el-radio :label="false" border></el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="offensive_content" :label-width="formLabelWidth">
-          <el-input v-model="currentData.offensive_content" autocomplete="off"></el-input>
+<!--          <el-select v-model="" placeholder="please select true or false" style="width: 100%">-->
+<!--            <el-option label="true" :value="true"></el-option>-->
+<!--            <el-option label="false" :value="false"></el-option>-->
+<!--          </el-select>-->
+          <el-radio-group v-model="currentData.offensive_content">
+            <el-radio :label="true" border></el-radio>
+            <el-radio :label="false" border></el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -171,7 +208,7 @@ export default {
         known_biases: true,
         sensitive_personal_information: true,
         offensive_content: true,
-        user_id: 0,
+        user_id: null,
         rejection_notes: ""
       },
       ruleForm:{
@@ -184,7 +221,7 @@ export default {
       },
       tableData: [],
       dialogFormVisible: false,
-      formLabelWidth: '150px'
+      formLabelWidth: '220px',
     }
   },
   created() {
@@ -223,14 +260,15 @@ export default {
       RequestService.deleteAIBOM(data).then( res => {
         console.log(res);
         this.tableData.splice(index,1)
-        Message({
-          message:"delete success",
-          type:res.message
-        });
-
+        this.tipMessage("delete success","success")
       })
     },
     saveAIbom(formRule){
+      if((this.currentData.declared_license === null || this.currentData.declared_license.length === 0) &&
+        (this.currentData.concluded_license === null  || this.currentData.concluded_license.length === 0)){
+        this.tipMessage("declared_license 和 concluded_license 不能同时为空","warning");
+        return false;
+      }
       this.$refs[formRule].validate((valid) => {
         if (valid) {
             const data = {
@@ -239,18 +277,12 @@ export default {
             data.pending_aibom_list.push(this.currentData)
             RequestService.saveAIBOM(data).then( res => {
               console.log(res)
-              Message({
-                message:res.message,
-                type:"success",
-              });
+              this.tipMessage(res.message,"success")
               this.dialogFormVisible = false;
             })
         } else {
           console.log('error submit!!');
-          Message({
-            message:"部分必填信息未填",
-            type:"warning",
-          })
+          this.tipMessage("部分必填信息未填","warning")
           return false;
         }
       });
@@ -258,6 +290,11 @@ export default {
     },
     // 提交已经填好的AIBOM
     submitCurrentData(index, row){
+      if((this.currentData.declared_license === null || this.currentData.declared_license.length === 0) &&
+        (this.currentData.concluded_license === null  || this.currentData.concluded_license.length === 0)){
+        this.tipMessage("declared_license 和 concluded_license 不能同时为空","warning");
+        return false;
+      }
       let valid = true;
       if(row.name === null || row.name.length === 0) valid = false;
       if(row.location === null || row.location.length === 0) valid = false;
@@ -273,21 +310,31 @@ export default {
         RequestService.submitAIBOM(data).then( res => {
           // submit
           this.tableData.splice(index,1)
-          Message({
-            message:"提交成功",
-            type:"success"
-          })
+          this.tipMessage("提交成功","success")
+        }).catch( err => {
+          this.tipMessage("异常","error")
         });
       } else {
         console.log('error submit!!');
-        Message({
-          message:"部分必填信息未填,请点击填写按钮进行填写",
-          type:"warning",
-        })
+        this.tipMessage("部分必填信息未填,请点击填写按钮进行填写","warning")
         return false;
       }
-
-    }
+    },
+    tipMessage(message,type){
+      Message({
+        message:message,
+        type:type
+      })
+    },
+    // formatBoolean: function (row, column, cellValue) {
+    //   var ret = ''  //你想在页面展示的值
+    //   if (cellValue) {
+    //     ret = "是"  //根据自己的需求设定
+    //   } else {
+    //     ret = "否"
+    //   }
+    //   return ret;
+    // },
   },
 }
 </script>

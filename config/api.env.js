@@ -1,7 +1,7 @@
-// import axios from "./https.env";
-// import { Token } from "./https.env";
+import axios from "./https.env";
+import { Token } from "./https.env";
 // import axios from "./http.env";
-import axios from "./http.env";
+// import axios from "./http.env";
 /**
  * API 2.1 List all the dataset licenses
  * @param {String} url

@@ -134,14 +134,17 @@ export default new Router({
           {
             path:"/review/review_upload",
             component:()=>import("../components/Review/reviewUpload.vue"),
+            meta:{requireAuth:true}
           },
           {
             path:"/review/appending_aibom",
             component:()=>import("../components/Review/apendingAIBOM"),
+            meta:{requireAuth:true}
           },{
             name:"/review/appending_aibom_table",
             path:"/review/appending_aibom_table",
             component:()=>import("../components/Review/apendingAIBOM-table"),
+            meta:{requireAuth:true}
           },
         ]
       },

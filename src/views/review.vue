@@ -18,7 +18,7 @@
           </el-col>
           <el-col :span="2">
             <div style="width: 100px">
-              <el-select class="license_color" v-model="value" placeholder="Dataset">
+              <el-select class="license_color" v-model="curValue" placeholder="Review">
                 <el-option
                   v-for="item in vague"
                   :key="item.value"
@@ -64,11 +64,13 @@
     </div>
 
     <!-- 标签页切换 -->
-    <el-tabs v-model="activeName" @tab-click="tabOnclick">
-      <el-tab-pane label="数据集review" name="first"></el-tab-pane>
-      <el-tab-pane label="AIBOM填写" name="second"></el-tab-pane>
-      <el-tab-pane label="AIBOM填写-table" name="third"></el-tab-pane>
-    </el-tabs>
+    <div style="width:calc(100% - 20px);padding:0px 10px">
+      <el-tabs v-model="activeName" @tab-click="tabOnclick">
+        <el-tab-pane label="数据集review" name="first"></el-tab-pane>
+        <el-tab-pane label="AIBOM填写" name="second"></el-tab-pane>
+        <el-tab-pane label="AIBOM填写-table" name="third"></el-tab-pane>
+      </el-tabs>
+    </div>
     <div class="aiBom-dataList" >
       <router-view></router-view>
     </div>
@@ -108,22 +110,22 @@
     </template>
 
 
-<!--    &lt;!&ndash;  分页&ndash;&gt;-->
-<!--    <div class="Dataset-paging">-->
-<!--      <div class="block">-->
-<!--        <el-pagination-->
-<!--          @size-change="handleSizeChange"-->
-<!--          @current-change="handleCurrentChange"-->
-<!--          :current-page="dataSetData.pageNum"-->
-<!--          :page-size="numDatasetData.pageSize"-->
-<!--          layout="total, prev, pager, next, jumper"-->
-<!--          :total="totalNum"-->
-<!--        >-->
-<!--        </el-pagination>-->
-<!--      </div>-->
-<!--    </div>-->
-    <!--尾部-->
+    <!--  分页-->
+    <div class="Dataset-paging">
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="dataSetData.pageNum"
+          :page-size="numDatasetData.pageSize"
+          layout="total, prev, pager, next, jumper"
+          :total="totalNum"
+        >
+        </el-pagination>
+      </div>
+    </div>
 
+<!--    尾部-->
     <template>
       <div class="license-tail-box">
         <el-row>
@@ -151,12 +153,17 @@ export default {
   name: "review",
   data() {
     return {
-      value: [],
+      value:[],
+      curValue:"Review",
       vague: [
         {
           value: "1",
           label: "License",
         },
+        // {
+        //   value: "2",
+        //   label: "Review",
+        // },
       ],
       rules:{
         datasetName:'',
@@ -179,6 +186,7 @@ export default {
       },
       basicInfoId: {},
       activeName: 'first',// tab激活哪一项
+      userId:sessionStorage.getItem("userId")
     };
 
   },
@@ -259,10 +267,13 @@ export default {
           // path:'/review/appending_aibom_table',
           name:"/review/appending_aibom_table",
           params:{
-            user_id:31,
+            user_id:this.userId,
           }
         })
       }
+    },
+    getTotal(){
+      this.totalNum = 1;
     }
   },
 };
@@ -354,16 +365,7 @@ export default {
 /*/deep/ .el-collapse-item__header{*/
 /*  background-color: beige ;*/
 /*}*/
-.aiBom-dataList .coll_item_span{
-  width: 100%;
-  background-color: rgba(73,204,144,.1);
-  padding-left:10px;
-}
-.aiBom-dataList .coll_item_span_odd{
-  width: 100%;
-  background-color: #fff;
-  padding-left:10px;
-}
+
 /deep/ .el-collapse-item {
   margin-bottom: 10px;
 }
@@ -372,8 +374,7 @@ export default {
   margin-bottom: 10px;
 }
 /deep/ .aiBom-dataList .el-form-item__content{
-  margin-left: 150px !important;
-  margin-left: 150px !important;
+  margin-left: 220px !important;
 }
 .collpase_form_div{
   width: 98%;
