@@ -30,34 +30,13 @@
               </el-select>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div>
-              <searchDataset />
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <template>
-              <div style="width: 100px">
-                <el-select class="license_color" v-model="value" placeholder="Menu">
-                  <el-option
-                    v-for="items in options"
-                    :key="items.values"
-                    :label="items.label"
-                    :value="items.values"
-                    @click.native="changenewClass"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </template>
-          </el-col>
         </el-row>
       </template>
       <!--  Welcome  -->
       <template>
         <el-row>
           <el-col :span="24">
-            <p class="licenseWelcome-box">Welcome to Dataset Metadata Portal</p>
+            <p class="licenseWelcome-box">Welcome to Review DataSet Page</p>
           </el-col>
         </el-row>
       </template>
@@ -65,65 +44,15 @@
 
     <!-- 标签页切换 -->
     <div style="width:calc(100% - 20px);padding:0px 10px">
-      <el-tabs v-model="activeName" @tab-click="tabOnclick">
-        <el-tab-pane label="数据集review" name="first"></el-tab-pane>
-        <el-tab-pane label="AIBOM填写" name="second"></el-tab-pane>
-        <el-tab-pane label="AIBOM填写-table" name="third"></el-tab-pane>
+      <el-tabs v-model="activeName" @tab-click="tabOnclick"   type="card" >
+        <el-tab-pane :label="item.label" :name="index+''" v-for="(item,index) in tabs" v-bind:key="index"></el-tab-pane>
       </el-tabs>
     </div>
     <div class="aiBom-dataList" >
       <router-view></router-view>
     </div>
 
-    <!-- Middle part-->
-    <template>
-      <div>
-        <h5 style="text-align: center; color: #003261">Total : {{ totalNum }}</h5>
-        <el-empty
-          v-if="dataSetData.length === 0"
-          description="No Data ..."
-          v-show="false"
-        >
-        </el-empty>
-        <div v-if="dataSetData.length !== 0">
-          <!-- 总长度/列数  = 行数 -->
-          <div class="list">
-            <div v-for="o in dataSetData" :key="o.id">
-              <el-card style="height: 120px">
-                <!-- operate -->
-                <div
-                  slot="header"
-                  class="clearfix"
-                  style="height: 40px; color: #003261; font-size: 15px"
-                  @click="toDataSetInfo(o.id)"
-                >
-                  {{ o["dataset_name"] }}
-                </div>
-                <div style="color: #a8a4a4; font-size: 10px">
-                  {{ o["license_name"] }}
-                </div>
-              </el-card>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
 
-
-    <!--  分页-->
-    <div class="Dataset-paging">
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="dataSetData.pageNum"
-          :page-size="numDatasetData.pageSize"
-          layout="total, prev, pager, next, jumper"
-          :total="totalNum"
-        >
-        </el-pagination>
-      </div>
-    </div>
 
 <!--    尾部-->
     <template>
@@ -153,6 +82,28 @@ export default {
   name: "review",
   data() {
     return {
+      tabs:[
+        {
+          label:"review upload",
+          path:"/review/review_upload",
+          isParams:false,
+        },
+        {
+          label:"AIBOM",
+          path: "/review/appending_aibom",
+          isParams:true,
+        },
+        {
+          label:"review upload by file",
+          path: "/review/reviewUploadByFile",
+          isParams:false,
+        },
+        {
+          label:"reviewed dataset",
+          path: "/review/reviewedDataSet",
+          isParams:true, // 是否需要参数
+        }
+      ],
       value:[],
       curValue:"Review",
       vague: [
@@ -160,10 +111,10 @@ export default {
           value: "1",
           label: "License",
         },
-        // {
-        //   value: "2",
-        //   label: "Review",
-        // },
+        {
+          value: "2",
+          label: "DateSet",
+        },
       ],
       rules:{
         datasetName:'',
@@ -185,7 +136,7 @@ export default {
         pageNum: 1,
       },
       basicInfoId: {},
-      activeName: 'first',// tab激活哪一项
+      activeName: '0',// tab激活哪一项
       userId:sessionStorage.getItem("userId")
     };
 
@@ -213,9 +164,16 @@ export default {
       this.$forceUpdate();
     },
     toHome() {
-      this.$router.push({
-        path: "/licenseAll",
-      });
+      if(this.curValue == 1){
+        this.$router.push({
+          path: "/licenseAll",
+        });
+      }else if(this.curValue == 2){
+        this.$router.push({
+          path: "/dataSetAll",
+        });
+      }
+
     },
     toDataSetInfo(id) {
       this.$router.push({
@@ -241,44 +199,38 @@ export default {
     },
 
     handleChange(val) {
-      console.log(val);
+      // console.log(val);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     clickForm(){
-      console.log("hello");
+      // console.log("hello");
 
     },
 
     // 当点击tab标签页的时候，切换路由
     tabOnclick(tab){
-      console.log(tab.name,"   ",this.activeName)
-      if(tab.name === 'first'){
+      // console.log(tab.name,"   ",this.activeName," ",tab.index);
+      const index = tab.index;
+      if(this.tabs[index].isParams){
         this.$router.push({
-          path:'/review/review_upload',
-        })
-      }else if(tab.name === 'second'){
-        this.$router.push({
-          path:'/review/appending_aibom',
-        })
-      }else if(tab.name === 'third'){
-        this.$router.push({
-          // path:'/review/appending_aibom_table',
-          name:"/review/appending_aibom_table",
+          name:this.tabs[index].path,
           params:{
             user_id:this.userId,
           }
-        })
+        });
+      }else{
+        this.$router.push({
+          path:this.tabs[index].path,
+        });
       }
     },
-    getTotal(){
-      this.totalNum = 1;
-    }
   },
 };
 </script>
 <style scoped>
+
 /*Header-top Part*/
 .licenseHeader-top {
   margin: 0 !important;
@@ -382,5 +334,11 @@ export default {
   margin: 0 auto;
   border: 1px solid #dbdbdb;
   box-shadow: 0px -1px 5px #888888;
+}
+/deep/ .el-input__inner {
+  border-radius: 10px !important;
+  border: 2px solid #fff !important;
+  background-color: #003261 !important;
+  color: #ffffff !important;
 }
 </style>

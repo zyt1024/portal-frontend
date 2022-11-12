@@ -1,27 +1,27 @@
 <template>
 <div>
-  <el-button @click="addDomain" style="margin-bottom: 20px;padding-left: 20px">新增表单</el-button>
+  <el-button @click="addDomain" style="margin-bottom: 20px;padding-left: 20px">Add a form</el-button>
   <el-collapse v-model="dataReviewActiveNames" @change="handleChange" >
     <el-collapse-item :name="index" v-for="(item,index) in dataReviewList"  :key="index" >
       <template slot="title" >
-        <span :class="index % 2==0 ?'coll_item_span_odd' : 'coll_item_span'">数据集上传表单:{{index}}
+        <span :class="index % 2==0 ?'coll_item_span_odd' : 'coll_item_span'">dataset form:{{index}}
           <i class="header-icon el-icon-info" style="padding-left: 10px"></i>
         </span>
       </template>
       <el-form :label-position="labelPosition"   label-width="100px" :model="dataReviewList[index]" >
-        <el-form-item label="数据名称" prop="name" required>
+        <el-form-item label="name" prop="name" required>
           <el-input v-model="dataReviewList[index].name">{{item.name}}}</el-input>
         </el-form-item>
-        <el-form-item label="官网" prop="location" required>
+        <el-form-item label="location" prop="location" required>
           <el-input v-model="dataReviewList[index].location" >{{item.location}}}</el-input>
         </el-form-item>
-        <el-form-item label="贡献者" prop="originator" required>
+        <el-form-item label="originator" prop="originator" required>
           <el-input v-model="dataReviewList[index].originator" >{{item.originator}}}</el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitReviewForm(index,dataReviewList[index])">提交</el-button>
+          <el-button type="primary" @click="submitReviewForm(index,dataReviewList[index])">submit</el-button>
 <!--          <el-button type="info" @click="resetForm('formLabelAlign')">重置</el-button>-->
-          <el-button type="info" @click.prevent="removeDomain(item)">删除表单</el-button>
+          <el-button type="info" @click.prevent="removeDomain(item)">delete form</el-button>
         </el-form-item>
       </el-form>
     </el-collapse-item>
@@ -70,7 +70,7 @@ export default {
       RequestService.saveAIBOM(data).then( res =>{
         console.log(res)
         Message({
-          message:'保存成功',
+          message:'save success',
           type: 'success'
         });
       })
@@ -90,7 +90,7 @@ export default {
         data.dataset_review_list.push(this.dataReviewList[index]);
         RequestService.dataUpload(data).then( res =>{
           Message({
-            message:'提交成功',
+            message:'submit success',
             type: 'success'
           });
           // 提交成功之后，应该将提交的表单删除
@@ -102,7 +102,7 @@ export default {
       } else {
         console.log('error submit!!');
         Message({
-          message:"部分必填信息未填",
+          message:"Some required information is not filled",
           type:"warning",
         })
         return false;
@@ -115,7 +115,7 @@ export default {
       if(index !== -1){
         const  aa = this.dataReviewList.splice(index,1);
         Message({
-          message:'删除表单成功',
+          message:'delete form success',
           type: 'success'
         });
       }

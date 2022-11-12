@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 Vue.use(Router)
 
 export default new Router({
@@ -122,9 +127,11 @@ export default new Router({
         path: "/uploadLicense",
         component: () => import("../components/Skill/uploadLicense"),
       },
+
+
       /*
        *
-       * review
+       * review user
        */
       {
         path:"/review",
@@ -137,16 +144,31 @@ export default new Router({
             meta:{requireAuth:true}
           },
           {
+            path:"/review/reviewUploadByFile",
+            component:()=>import("../components/Review/reviewUploadByFile"),
+            meta:{requireAuth:true}
+          },{
+            name:"/review/appending_aibom",
             path:"/review/appending_aibom",
             component:()=>import("../components/Review/apendingAIBOM"),
             meta:{requireAuth:true}
           },{
-            name:"/review/appending_aibom_table",
-            path:"/review/appending_aibom_table",
-            component:()=>import("../components/Review/apendingAIBOM-table"),
+            name:"/review/reviewedDataSet",
+            path:"/review/reviewedDataSet",
+            component:() => import("../components/Review/reviewedDataSet"),
             meta:{requireAuth:true}
-          },
+          }
         ]
       },
+
+      /*
+      *
+      * inspect page
+      */
+      {
+        path: '/inspectDataSet',
+        component: () => import('../views/inspectDataSetAll.vue'),
+      },
+
     ]
   })

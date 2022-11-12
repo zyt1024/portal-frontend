@@ -258,7 +258,7 @@ export default {
         this.$router.push({
           path: "/review",
         });
-        if(this.$route.path === '/licenseAll'){
+        if(this.$route.path === '/licenseAll' || this.$route.path === '/' ){
           this.value = 'license';
         }
       }

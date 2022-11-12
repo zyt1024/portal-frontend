@@ -9,6 +9,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import locale from 'element-ui/lib/locale/lang/en'
 
 // Vue.use(ElementUI, { locale })
+
+
 Vue.use(router)
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios)
@@ -38,8 +40,8 @@ router.beforeEach((to, from, next) => {
   // var _this = this;
   if(to.meta.requireAuth){
     if(JSON.parse(sessionStorage.getItem("userId"))==null){
-      console.log('没有登录',)
-      alert("请先登录")
+      console.log('not login',)
+      alert("please login")
       return;
       // next('licenseAll')
     } else {
@@ -47,7 +49,6 @@ router.beforeEach((to, from, next) => {
     }
   }
   else {
-
     next();
   }
 });

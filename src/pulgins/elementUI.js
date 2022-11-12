@@ -37,7 +37,9 @@ import {
   Popover,
   Message,
   Dialog,
-  Tag
+  Tag,
+  InputNumber,
+  Upload
 } from "element-ui";
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
@@ -83,8 +85,10 @@ export default {
       .use(Popover)
       .use(Dialog)
       .use(Tag)
+      .use(InputNumber)
+      .use(Upload)
   }
 };
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$notify = Notification;
-// Vue.prototype.$message = Message;
+Vue.prototype.$message = Message;

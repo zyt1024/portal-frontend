@@ -1,8 +1,9 @@
 import axios from "axios";
 // export { default } from "axios"
 // axios.defaults.baseURL = "http://{Server-IP}}/api/v1";
-axios.defaults.baseURL = "http://119.8.116.2:9215";
+// axios.defaults.baseURL = "";
 const ax = axios.create({
+  baseURL:"http://{Server-IP}:port",
   timeout:5000,
   headers:{
     'Content-Type': "application/json; charset=utf-8"

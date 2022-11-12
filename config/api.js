@@ -47,7 +47,85 @@ export default {
       data:data
       // params: params
     });
-  }
+  },
+  uploadFiles(data){
+    return axios.request({
+      url: "/user/dataset_review/review_upload_by_file",
+      method: "post",
+      data:data,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
+  getReviewedData(params){
+    return axios.request({
+      url: "/auth/dataset_review/review_result",
+      method: "get",
+      params: params
+    });
+  },
+  downloadReviewedData(params){
+    return axios.request({
+      url: "/auth/dataset_review/review_result_download",
+      method: "post",
+      data: params,
+    });
+  },
+
+  // inspect
+  getReviewData(params){
+    return axios.request({
+      url: "/auth/dataset_review/pending_review",
+      method: "get",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      params: {
+        user_id:params,
+      }
+    });
+  },
+  saveTempReviewData(data){
+    return axios.request({
+      url: "/auth/dataset_review/save_review",
+      method: "post",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      data:data
+    });
+  },
+  submitReviewData(data){
+    return axios.request({
+      url: "/auth/dataset_review/submit_review",
+      method: "post",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      data:data
+    });
+  },
+  rejectReviewData(data){
+    return axios.request({
+      url: "/auth/dataset_review/reject_review",
+      method: "post",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      data:data
+    });
+  },
+  getOverReviewData(params){
+    return axios.request({
+      url: "/auth/dataset_review/review_result",
+      method: "get",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      params: {
+        user_id:params,
+      }
+    });
+  },
+  downloadResultData(data){
+    return axios.request({
+      url: "/auth/dataset_review/review_result_download",
+      method: "post",
+      // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      data:data
+    });
+  },
 }
 // export const dataUpload = (data = {}) => {
 //   return axios.request({
